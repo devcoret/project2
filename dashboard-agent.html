@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maskn - صفحة الوكيل العقاري</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1a3a8f;
+    --primary-dark: #122878;
+    --primary-light: #2650c8;
+    --accent: #3b82f6;
+    --accent-green: #22c55e;
+    --accent-red: #ef4444;
+    --accent-orange: #f97316;
+    --bg: #f0f4ff;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --sidebar-w: 220px;
+    --header-h: 64px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { display:flex; flex-direction:column;
+    font-family: 'Cairo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    position: fixed;
+    top: 0; right: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--primary);
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    transition: transform .3s;
+  }
+  .sidebar-logo {
+    padding: 22px 20px;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+  .sidebar-nav { flex: 1; padding: 16px 0; }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 20px;
+    color: rgba(255,255,255,.75);
+    cursor: pointer;
+    font-size: .95rem;
+    font-weight: 500;
+    transition: background .2s, color .2s;
+    border-right: 3px solid transparent;
+  }
+  .nav-item:hover, .nav-item.active {
+    background: rgba(255,255,255,.1);
+    color: #fff;
+    border-right-color: #60a5fa;
+  }
+  .nav-item svg { flex-shrink: 0; }
+  .sidebar-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.4);
+    z-index: 99;
+  }
+
+  /* HEADER */
+  .header {
+    position: fixed;
+    top: 0; right: var(--sidebar-w); left: 0;
+    height: var(--header-h);
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 90;
+    gap: 12px;
+  }
+  .header-title { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+  .header-sub { font-size: .8rem; color: var(--text-muted); }
+  .header-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 7px 14px;
+    flex: 0 1 260px;
+  }
+  .header-search input {
+    border: none; background: transparent;
+    font-family: 'Cairo', sans-serif;
+    font-size: .9rem; color: var(--text);
+    outline: none; width: 100%;
+    text-align: right;
+  }
+  .header-actions { display: flex; align-items: center; gap: 12px; }
+  .avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-light), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: .9rem;
+    cursor: pointer;
+  }
+  .icon-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--text-muted);
+    transition: background .2s;
+  }
+  .icon-btn:hover { background: var(--border); }
+  .hamburger {
+    display: none;
+    background: none; border: none;
+    cursor: pointer; color: var(--text);
+    padding: 4px;
+  }
+
+  /* MAIN */
+  .main {
+    margin-right: var(--sidebar-w);
+    margin-top: var(--header-h);
+    padding: 24px;
+    min-height: calc(100vh - var(--header-h));
+  }
+
+  /* GRID LAYOUT */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 20px;
+  }
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 18px 12px;
+    font-weight: 700; font-size: 1rem;
+    color: var(--primary);
+  }
+
+  /* PROPERTY CARD */
+  .property-card { grid-column: 1 / 2; }
+  .property-img {
+    width: 100%; height: 180px;
+    object-fit: cover;
+    background: linear-gradient(135deg, #93c5fd 0%, #3b82f6 50%, #1d4ed8 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .property-img-placeholder {
+    width: 100%; height: 180px;
+    background: linear-gradient(160deg, #b3d4ff 0%, #4f8ef7 60%, #1a3a8f 100%);
+    display: flex; align-items: flex-end; justify-content: flex-start;
+    padding: 14px;
+    position: relative;
+  }
+  .property-badge {
+    background: rgba(255,255,255,.9);
+    color: var(--primary);
+    font-size: .78rem; font-weight: 700;
+    padding: 4px 10px; border-radius: 20px;
+  }
+  .dots { display: flex; gap: 5px; position: absolute; bottom: 14px; right: 50%; transform: translateX(50%); }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.5); }
+  .dot.active { background: #fff; }
+  .property-body { padding: 14px 18px; }
+  .property-title { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+  .property-loc { font-size: .82rem; color: var(--text-muted); }
+
+  /* BOOKINGS */
+  .bookings-card { grid-column: 1 / 2; }
+  .booking-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    gap: 10px;
+  }
+  .booking-item:last-child { border-bottom: none; }
+  .booking-name { font-size: .9rem; font-weight: 600; }
+  .booking-actions { display: flex; gap: 8px; flex-shrink: 0; }
+  .btn-confirm {
+    background: var(--primary);
+    color: #fff; border: none;
+    padding: 6px 14px; border-radius: 8px;
+    font-family: 'Cairo', sans-serif;
+    font-size: .82rem; font-weight: 600;
+    cursor: pointer; transition: background .2s;
+  }
+  .btn-confirm:hover { background: var(--primary-dark); }
+  .btn-cancel {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 6px 14px; border-radius: 8px;
+    font-family: 'Cairo', sans-serif;
+    font-size: .82rem; cursor: pointer; transition: all .2s;
+  }
+  .btn-cancel:hover { border-color: var(--accent-red); color: var(--accent-red); }
+  .booking-nav {
+    display: flex; justify-content: center; gap: 8px; padding: 12px;
+  }
+  .nav-btn {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border); background: transparent;
+    cursor: pointer; color: var(--text-muted);
+    transition: all .2s;
+  }
+  .nav-btn.active-btn { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+  /* ANALYTICS */
+  .analytics-card { grid-column: 2 / 3; grid-row: 1 / 2; }
+  .analytics-stats {
+    display: flex; flex-direction: column; gap: 8px;
+    padding: 0 18px 12px;
+  }
+  .stat-row {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px;
+  }
+  .stat-label { font-size: .82rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+  .stat-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .stat-val { font-size: .85rem; font-weight: 700; }
+  .chart-bars {
+    display: flex; align-items: flex-end; gap: 6px;
+    height: 70px; padding: 0 18px 12px;
+  }
+  .bar {
+    flex: 1; border-radius: 4px 4px 0 0;
+    transition: opacity .2s;
+  }
+  .bar:hover { opacity: .8; }
+  .views-chart {
+    padding: 0 18px 16px;
+    position: relative; height: 80px;
+  }
+  .views-svg { width: 100%; height: 100%; }
+
+  /* MESSAGES */
+  .messages-card { grid-column: 2 / 3; grid-row: 2 / 4; }
+  .msg-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer; transition: background .15s;
+  }
+  .msg-item:hover { background: var(--bg); }
+  .msg-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-light), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: .78rem; font-weight: 700; flex-shrink: 0;
+  }
+  .msg-content { flex: 1; min-width: 0; }
+  .msg-name { font-size: .88rem; font-weight: 700; }
+  .msg-text { font-size: .78rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .msg-reply { font-size: .75rem; color: var(--text-muted); margin-top: 2px; }
+
+  /* VIEWS SECTION */
+  .views-card { grid-column: 1 / 2; }
+  .views-header-text { font-size: .88rem; color: var(--text-muted); padding: 0 18px 8px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    :root { --sidebar-w: 0px; }
+    .sidebar { transform: translateX(100%); width: 220px; --sidebar-w: 220px; }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar-overlay.open { display: block; }
+    .header { right: 0; }
+    .hamburger { display: flex; }
+    .main { margin-right: 0; }
+    .dashboard-grid { grid-template-columns: 1fr; }
+    .property-card, .bookings-card, .analytics-card, .messages-card, .views-card {
+      grid-column: 1 / 2 !important;
+      grid-row: auto !important;
+    }
+  }
+  @media (max-width: 560px) {
+    .main { padding: 14px; }
+    .header { padding: 0 14px; }
+    .header-search { display: none; }
+    .booking-item { flex-wrap: wrap; }
+  }
+
+  /* FOOTER */
+  .footer { background:#122878; color:rgba(255,255,255,.8); margin-right:var(--sidebar-w); }
+  .footer-inner { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:32px; padding:40px 28px 28px; }
+  .footer-brand .logo { font-size:1.5rem; font-weight:800; color:#fff; margin-bottom:10px; }
+  .footer-brand p { font-size:.82rem; line-height:1.7; color:rgba(255,255,255,.6); max-width:220px; }
+  .footer-col h4 { font-size:.9rem; font-weight:700; color:#fff; margin-bottom:14px; }
+  .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:8px; }
+  .footer-col ul li a { font-size:.82rem; color:rgba(255,255,255,.6); text-decoration:none; transition:color .2s; }
+  .footer-col ul li a:hover { color:#fff; }
+  .footer-bottom { border-top:1px solid rgba(255,255,255,.1); padding:16px 28px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+  .footer-bottom p { font-size:.78rem; color:rgba(255,255,255,.4); }
+  .footer-socials { display:flex; gap:10px; }
+  .social-btn { width:32px; height:32px; border-radius:8px; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.6); cursor:pointer; transition:background .2s; text-decoration:none; }
+  .social-btn:hover { background:rgba(255,255,255,.18); color:#fff; }
+  @media(max-width:900px){ .footer{ margin-right:0; } .footer-inner{ grid-template-columns:1fr 1fr; } }
+  @media(max-width:560px){ .footer-inner{ grid-template-columns:1fr; gap:20px; } }
+</style>
+</head>
+<body>
+
+<!-- Sidebar Overlay -->
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">Maskn</div>
+  <nav class="sidebar-nav">
+    <a href="dashboard-agent.html" class="nav-item active">
+  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <rect x="3" y="3" width="7" height="7"/>
+    <rect x="14" y="3" width="7" height="7"/>
+    <rect x="3" y="14" width="7" height="7"/>
+    <rect x="14" y="14" width="7" height="7"/>
+  </svg>
+  إدارة التحكم
+</a>
+
+<a href="management.html" class="nav-item">
+  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+    <polyline points="9 22 9 12 15 12 15 22"/>
+  </svg>
+  إدارة العقار
+</a>
+
+<a href="profile-agent.html" class="nav-item">
+  <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+    <circle cx="12" cy="7" r="4"/>
+  </svg>
+  ملف الشخصي
+</a>
+  </nav>
+</aside>
+
+<!-- Header -->
+<header class="header">
+  <button class="hamburger" onclick="toggleSidebar()">
+    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div>
+    <div class="header-title">صفحة الوكيل العقاري</div>
+    <div class="header-sub">تم تسجيلك كوكيل عقاري</div>
+  </div>
+  <div class="header-search">
+    <svg width="15" height="15" fill="none" stroke="#94a3b8" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="text" placeholder="ابحث...">
+  </div>
+  <div class="header-actions">
+    <div class="icon-btn">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+    </div>
+    <div class="avatar">أ</div>
+  </div>
+</header>
+
+<!-- Main -->
+<main class="main">
+  <div class="dashboard-grid">
+
+    <!-- Property Card -->
+    <div class="card property-card">
+      <div class="property-img-placeholder">
+        <span class="property-badge">للبيع</span>
+        <div class="dots" style="right:auto;left:50%;transform:translateX(-50%)">
+          <div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+      </div>
+      <div class="property-body">
+        <div class="property-title">فيلا فاخرة - حي الياسمين</div>
+        <div class="property-loc">الرياض، المملكة العربية السعودية</div>
+      </div>
+    </div>
+
+    <!-- Analytics -->
+    <div class="card analytics-card">
+      <div class="card-header">
+        التحليلات
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+      </div>
+      <div class="analytics-stats">
+        <div class="stat-row">
+          <div class="stat-label"><div class="stat-dot" style="background:var(--accent-green)"></div> الإيجارات النشطة</div>
+          <div class="stat-val" style="color:var(--accent-green)">١٢</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-label"><div class="stat-dot" style="background:var(--accent)"></div> عدد المبيعات</div>
+          <div class="stat-val" style="color:var(--accent)">٨</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-label"><div class="stat-dot" style="background:var(--accent-orange)"></div> قيد المراجعة</div>
+          <div class="stat-val" style="color:var(--accent-orange)">٣</div>
+        </div>
+      </div>
+      <div class="chart-bars">
+        <div class="bar" style="height:55%;background:var(--accent-green);opacity:.7"></div>
+        <div class="bar" style="height:80%;background:var(--accent)"></div>
+        <div class="bar" style="height:40%;background:var(--accent-orange);opacity:.7"></div>
+        <div class="bar" style="height:65%;background:var(--primary-light)"></div>
+        <div class="bar" style="height:90%;background:var(--accent)"></div>
+        <div class="bar" style="height:55%;background:var(--accent-green);opacity:.7"></div>
+        <div class="bar" style="height:70%;background:var(--primary-light)"></div>
+      </div>
+    </div>
+
+    <!-- Bookings -->
+    <div class="card bookings-card">
+      <div class="card-header">حجز الزيارة</div>
+      <div class="booking-item">
+        <div class="booking-name">أحمد محمد</div>
+        <div class="booking-actions">
+          <button class="btn-confirm">تأكيد الحجز</button>
+          <button class="btn-cancel">إلغاء الحجز</button>
+        </div>
+      </div>
+      <div class="booking-item">
+        <div class="booking-name">أحمد محمد</div>
+        <div class="booking-actions">
+          <button class="btn-confirm">تأكيد الحجز</button>
+          <button class="btn-cancel">إلغاء الحجز</button>
+        </div>
+      </div>
+      <div class="booking-nav">
+        <button class="nav-btn">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="nav-btn active-btn">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Views Chart -->
+    <div class="card views-card" style="grid-column:1/2">
+      <div class="card-header">عدد المشاهدات للعقار هذا الأسبوع</div>
+      <div class="views-chart" style="height:100px;padding:0 18px 16px">
+        <svg class="views-svg" viewBox="0 0 300 80" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path d="M0,60 C30,55 50,30 80,35 C110,40 130,20 160,25 C190,30 210,45 240,30 C270,15 290,20 300,18 L300,80 L0,80 Z" fill="url(#grad)"/>
+          <path d="M0,60 C30,55 50,30 80,35 C110,40 130,20 160,25 C190,30 210,45 240,30 C270,15 290,20 300,18" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="card messages-card">
+      <div class="card-header">الرسائل الاخيرة</div>
+      <div class="msg-item">
+        <div class="msg-avatar">أ</div>
+        <div class="msg-content">
+          <div class="msg-name">أحمد محمد</div>
+          <div class="msg-text">هل الشقة لا تزال متاحة؟ أريد معرفة المزيد</div>
+          <div class="msg-reply">الرد</div>
+        </div>
+      </div>
+      <div class="msg-item">
+        <div class="msg-avatar" style="background:linear-gradient(135deg,#f97316,#ef4444)">م</div>
+        <div class="msg-content">
+          <div class="msg-name">أحمد محمد</div>
+          <div class="msg-text">هل الشقة لا تزال متاحة؟ أريد معرفة المزيد</div>
+          <div class="msg-reply">الرد</div>
+        </div>
+      </div>
+      <div class="msg-item">
+        <div class="msg-avatar" style="background:linear-gradient(135deg,#22c55e,#16a34a)">س</div>
+        <div class="msg-content">
+          <div class="msg-name">أحمد محمد</div>
+          <div class="msg-text">هل الشقة لا تزال متاحة؟ أريد معرفة المزيد</div>
+          <div class="msg-reply">الرد</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
+</script>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">Maskn</div>
+      <p>منصة عقارية متكاملة تربط الوكلاء بالمشترين والمستأجرين بأعلى مستويات الثقة والمصداقية.</p>
+    </div>
+    <div class="footer-col">
+      <h4>الخدمات</h4>
+      <ul>
+        <li><a href="#">إضافة عقار</a></li>
+        <li><a href="#">البحث عن عقار</a></li>
+        <li><a href="#">تقييم العقارات</a></li>
+        <li><a href="#">إدارة الحجوزات</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>الشركة</h4>
+      <ul>
+        <li><a href="#">من نحن</a></li>
+        <li><a href="#">تواصل معنا</a></li>
+        <li><a href="#">المدونة</a></li>
+        <li><a href="#">الوظائف</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>الدعم</h4>
+      <ul>
+        <li><a href="#">مركز المساعدة</a></li>
+        <li><a href="#">سياسة الخصوصية</a></li>
+        <li><a href="#">الشروط والأحكام</a></li>
+        <li><a href="#">الإبلاغ عن مشكلة</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© ٢٠٢٦ Maskn. جميع الحقوق محفوظة.</p>
+    <div class="footer-socials">
+      <a class="social-btn" href="#">
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+      </a>
+      <a class="social-btn" href="#">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+      <a class="social-btn" href="#">
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maskn - إدارة العقار</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #1a3a8f;
+    --primary-dark: #122878;
+    --primary-light: #2650c8;
+    --accent: #3b82f6;
+    --accent-green: #22c55e;
+    --accent-red: #ef4444;
+    --accent-orange: #f97316;
+    --accent-yellow: #eab308;
+    --bg: #f0f4ff;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --sidebar-w: 220px;
+    --header-h: 64px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Cairo',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; flex-direction:column; }
+
+  /* SIDEBAR */
+  .sidebar {
+    position:fixed; top:0; right:0;
+    width:var(--sidebar-w); height:100vh;
+    background:var(--primary);
+    display:flex; flex-direction:column;
+    z-index:100; transition:transform .3s;
+  }
+  .sidebar-logo { padding:22px 20px; font-size:1.6rem; font-weight:800; color:#fff; letter-spacing:1px; border-bottom:1px solid rgba(255,255,255,.1); }
+  .sidebar-nav { flex:1; padding:16px 0; overflow-y:auto; }
+  .nav-item {
+    display:flex; align-items:center; gap:12px;
+    padding:13px 20px; color:rgba(255,255,255,.75);
+    cursor:pointer; font-size:.95rem; font-weight:500;
+    transition:background .2s,color .2s;
+    border-right:3px solid transparent;
+    text-decoration:none;
+  }
+  .nav-item:hover,.nav-item.active { background:rgba(255,255,255,.1); color:#fff; border-right-color:#60a5fa; }
+  .sidebar-footer { padding:16px 20px; border-top:1px solid rgba(255,255,255,.1); }
+  .sidebar-user { display:flex; align-items:center; gap:10px; }
+  .sidebar-avatar { width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,.2); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:.85rem; }
+  .sidebar-name { font-size:.85rem; font-weight:600; color:rgba(255,255,255,.9); }
+  .sidebar-role { font-size:.72rem; color:rgba(255,255,255,.5); }
+  .sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:99; }
+
+  /* HEADER */
+  .header {
+    position:fixed; top:0; right:var(--sidebar-w); left:0;
+    height:var(--header-h); background:var(--card);
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 24px; z-index:90; gap:12px;
+  }
+  .header-left { display:flex; align-items:center; gap:12px; }
+  .hamburger { display:none; background:none; border:none; cursor:pointer; color:var(--text); padding:4px; }
+  .header-title { font-size:1.1rem; font-weight:700; color:var(--primary); }
+  .header-sub { font-size:.78rem; color:var(--text-muted); }
+  .header-right { display:flex; align-items:center; gap:10px; }
+  .header-search { display:flex; align-items:center; gap:8px; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:7px 14px; flex:0 1 240px; }
+  .header-search input { border:none; background:transparent; font-family:'Cairo',sans-serif; font-size:.88rem; color:var(--text); outline:none; width:100%; text-align:right; }
+  .icon-btn { width:36px; height:36px; border-radius:50%; background:var(--bg); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text-muted); transition:background .2s; position:relative; }
+  .icon-btn:hover { background:var(--border); }
+  .badge { position:absolute; top:-2px; left:-2px; width:16px; height:16px; border-radius:50%; background:var(--accent-red); color:#fff; font-size:.6rem; font-weight:700; display:flex; align-items:center; justify-content:center; }
+  .avatar { width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg,var(--primary-light),var(--accent)); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; font-size:.9rem; cursor:pointer; }
+  .btn-add { display:flex; align-items:center; gap:6px; background:var(--primary); color:#fff; border:none; padding:8px 16px; border-radius:10px; font-family:'Cairo',sans-serif; font-size:.88rem; font-weight:600; cursor:pointer; transition:background .2s; white-space:nowrap; }
+  .btn-add:hover { background:var(--primary-dark); }
+
+  /* MAIN */
+  .main { margin-right:var(--sidebar-w); margin-top:var(--header-h); padding:26px 28px; flex:1; }
+
+  /* STATS ROW */
+  .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px; }
+  .stat-card { background:var(--card); border-radius:14px; border:1px solid var(--border); padding:18px 20px; display:flex; align-items:center; gap:14px; transition:transform .2s,box-shadow .2s; }
+  .stat-card:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(26,58,143,.1); }
+  .stat-icon { width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .stat-info { flex:1; }
+  .stat-num { font-size:1.5rem; font-weight:800; line-height:1; }
+  .stat-label { font-size:.78rem; color:var(--text-muted); margin-top:3px; }
+  .stat-trend { font-size:.72rem; font-weight:600; display:flex; align-items:center; gap:3px; margin-top:4px; }
+
+  /* FILTERS */
+  .filters-row { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; flex-wrap:wrap; }
+  .filter-tabs { display:flex; gap:6px; flex-wrap:wrap; }
+  .filter-tab { padding:7px 16px; border-radius:20px; border:1.5px solid var(--border); background:var(--card); font-family:'Cairo',sans-serif; font-size:.85rem; font-weight:600; cursor:pointer; color:var(--text-muted); transition:all .2s; }
+  .filter-tab:hover { border-color:var(--accent); color:var(--accent); }
+  .filter-tab.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+  .view-toggles { display:flex; gap:6px; }
+  .view-btn { width:36px; height:36px; border-radius:8px; border:1.5px solid var(--border); background:var(--card); display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text-muted); transition:all .2s; }
+  .view-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+
+  /* PROPERTIES GRID */
+  .properties-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .prop-card { background:var(--card); border-radius:16px; border:1px solid var(--border); overflow:hidden; transition:transform .2s,box-shadow .2s; }
+  .prop-card:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(26,58,143,.12); }
+  .prop-img { width:100%; height:160px; position:relative; overflow:hidden; }
+  .prop-img-bg { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:3rem; }
+  .prop-status { position:absolute; top:10px; right:10px; padding:4px 10px; border-radius:20px; font-size:.72rem; font-weight:700; }
+  .status-sale { background:rgba(59,130,246,.15); color:#2563eb; border:1px solid rgba(59,130,246,.3); }
+  .status-rent { background:rgba(34,197,94,.15); color:#16a34a; border:1px solid rgba(34,197,94,.3); }
+  .status-pending { background:rgba(234,179,8,.15); color:#b45309; border:1px solid rgba(234,179,8,.3); }
+  .status-sold { background:rgba(239,68,68,.15); color:#dc2626; border:1px solid rgba(239,68,68,.3); }
+  .prop-menu-btn { position:absolute; top:10px; left:10px; width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,.9); display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text-muted); font-size:.9rem; font-weight:700; border:none; }
+  .prop-body { padding:14px 16px; }
+  .prop-type-badge { display:inline-block; background:var(--bg); color:var(--primary); font-size:.72rem; font-weight:700; padding:2px 8px; border-radius:6px; margin-bottom:6px; }
+  .prop-title { font-size:.95rem; font-weight:700; margin-bottom:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .prop-loc { font-size:.78rem; color:var(--text-muted); display:flex; align-items:center; gap:4px; margin-bottom:10px; }
+  .prop-details { display:flex; gap:12px; margin-bottom:12px; flex-wrap:wrap; }
+  .prop-detail { display:flex; align-items:center; gap:4px; font-size:.78rem; color:var(--text-muted); }
+  .prop-footer { display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border); padding-top:10px; }
+  .prop-price { font-size:1rem; font-weight:800; color:var(--primary); }
+  .prop-price span { font-size:.72rem; font-weight:400; color:var(--text-muted); }
+  .prop-actions { display:flex; gap:6px; }
+  .btn-edit { padding:5px 12px; border-radius:8px; border:1.5px solid var(--primary); color:var(--primary); background:transparent; font-family:'Cairo',sans-serif; font-size:.78rem; font-weight:600; cursor:pointer; transition:all .2s; }
+  .btn-edit:hover { background:var(--primary); color:#fff; }
+  .btn-del { padding:5px 10px; border-radius:8px; border:1.5px solid var(--border); color:var(--text-muted); background:transparent; font-family:'Cairo',sans-serif; font-size:.78rem; cursor:pointer; transition:all .2s; }
+  .btn-del:hover { border-color:var(--accent-red); color:var(--accent-red); }
+  .prop-views { display:flex; align-items:center; gap:4px; font-size:.75rem; color:var(--text-muted); }
+
+  /* PAGINATION */
+  .pagination { display:flex; justify-content:center; align-items:center; gap:8px; margin-top:28px; }
+  .page-btn { width:36px; height:36px; border-radius:8px; border:1.5px solid var(--border); background:var(--card); display:flex; align-items:center; justify-content:center; cursor:pointer; font-family:'Cairo',sans-serif; font-size:.88rem; font-weight:600; color:var(--text-muted); transition:all .2s; }
+  .page-btn:hover { border-color:var(--accent); color:var(--accent); }
+  .page-btn.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+
+  /* FOOTER */
+  .footer { background:var(--primary-dark); color:rgba(255,255,255,.8); margin-right:var(--sidebar-w); }
+  .footer-inner { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:32px; padding:40px 28px 28px; }
+  .footer-brand .logo { font-size:1.5rem; font-weight:800; color:#fff; margin-bottom:10px; }
+  .footer-brand p { font-size:.82rem; line-height:1.7; color:rgba(255,255,255,.6); max-width:220px; }
+  .footer-col h4 { font-size:.9rem; font-weight:700; color:#fff; margin-bottom:14px; }
+  .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:8px; }
+  .footer-col ul li a { font-size:.82rem; color:rgba(255,255,255,.6); text-decoration:none; transition:color .2s; }
+  .footer-col ul li a:hover { color:#fff; }
+  .footer-bottom { border-top:1px solid rgba(255,255,255,.1); padding:16px 28px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+  .footer-bottom p { font-size:.78rem; color:rgba(255,255,255,.4); }
+  .footer-socials { display:flex; gap:10px; }
+  .social-btn { width:32px; height:32px; border-radius:8px; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.6); cursor:pointer; transition:background .2s; text-decoration:none; }
+  .social-btn:hover { background:rgba(255,255,255,.18); color:#fff; }
+
+  /* EMPTY STATE */
+  .empty { text-align:center; padding:60px 20px; color:var(--text-muted); }
+  .empty svg { margin-bottom:16px; opacity:.3; }
+  .empty h3 { font-size:1rem; font-weight:700; margin-bottom:6px; }
+  .empty p { font-size:.85rem; }
+
+  /* RESPONSIVE */
+  @media(max-width:1100px){ .properties-grid{ grid-template-columns:repeat(2,1fr); } .stats-row{ grid-template-columns:repeat(2,1fr); } }
+  @media(max-width:900px){
+    .sidebar{ transform:translateX(100%); }
+    .sidebar.open{ transform:translateX(0); }
+    .sidebar-overlay.open{ display:block; }
+    .header{ right:0; } .hamburger{ display:flex; }
+    .main{ margin-right:0; }
+    .footer{ margin-right:0; }
+    .footer-inner{ grid-template-columns:1fr 1fr; }
+  }
+  @media(max-width:640px){
+    .properties-grid{ grid-template-columns:1fr; }
+    .stats-row{ grid-template-columns:repeat(2,1fr); }
+    .main{ padding:16px 14px; }
+    .header-search{ display:none; }
+    .footer-inner{ grid-template-columns:1fr; gap:20px; }
+    .filters-row{ flex-direction:column; align-items:flex-start; }
+  }
+  @media(max-width:420px){ .stats-row{ grid-template-columns:1fr; } }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  .prop-card { animation:fadeUp .4s ease both; }
+  .prop-card:nth-child(1){animation-delay:.05s}
+  .prop-card:nth-child(2){animation-delay:.1s}
+  .prop-card:nth-child(3){animation-delay:.15s}
+  .prop-card:nth-child(4){animation-delay:.2s}
+  .prop-card:nth-child(5){animation-delay:.25s}
+  .prop-card:nth-child(6){animation-delay:.3s}
+</style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">Maskn</div>
+  <nav class="sidebar-nav">
+    <a href="maskn-agent-dashboard.html" class="nav-item">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      إدارة التحكم
+    </a>
+    <a href="#" class="nav-item active">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      إدارة العقار
+    </a>
+    <a href="maskn-profile.html" class="nav-item">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      ملف الشخصي
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar">أ</div>
+      <div>
+        <div class="sidebar-name">أحمد محمد</div>
+        <div class="sidebar-role">وكيل عقاري</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<header class="header">
+  <div class="header-left">
+    <button class="hamburger" onclick="toggleSidebar()">
+      <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div>
+      <div class="header-title">إدارة العقارات</div>
+      <div class="header-sub">لديك ٦ عقارات مسجلة</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="header-search">
+      <svg width="14" height="14" fill="none" stroke="#94a3b8" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="ابحث في عقاراتك...">
+    </div>
+    <div class="icon-btn">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      <span class="badge">٣</span>
+    </div>
+    <button class="btn-add" onclick="window.location='maskn-add-property.html'">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      إضافة عقار
+    </button>
+    <div class="avatar">أ</div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#eff6ff">
+        <svg width="22" height="22" fill="none" stroke="#3b82f6" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+      </div>
+      <div class="stat-info">
+        <div class="stat-num" style="color:var(--accent)">٦</div>
+        <div class="stat-label">إجمالي العقارات</div>
+        <div class="stat-trend" style="color:var(--accent-green)">
+          <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          +٢ هذا الشهر
+        </div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#f0fdf4">
+        <svg width="22" height="22" fill="none" stroke="#22c55e" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="stat-info">
+        <div class="stat-num" style="color:var(--accent-green)">٣</div>
+        <div class="stat-label">عقارات نشطة</div>
+        <div class="stat-trend" style="color:var(--accent-green)">متاحة الآن</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#fefce8">
+        <svg width="22" height="22" fill="none" stroke="#eab308" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div class="stat-info">
+        <div class="stat-num" style="color:var(--accent-yellow)">٢</div>
+        <div class="stat-label">قيد المراجعة</div>
+        <div class="stat-trend" style="color:var(--accent-orange)">جارٍ المعالجة</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon" style="background:#fdf2f8">
+        <svg width="22" height="22" fill="none" stroke="#a855f7" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <div class="stat-info">
+        <div class="stat-num" style="color:#a855f7">٢.٥م$</div>
+        <div class="stat-label">إجمالي القيمة</div>
+        <div class="stat-trend" style="color:var(--accent-green)">
+          <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          +١٢% نمو
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-row">
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterProps(this,'all')">الكل (٦)</button>
+      <button class="filter-tab" onclick="filterProps(this,'sale')">للبيع</button>
+      <button class="filter-tab" onclick="filterProps(this,'rent')">للإيجار</button>
+      <button class="filter-tab" onclick="filterProps(this,'pending')">قيد المراجعة</button>
+      <button class="filter-tab" onclick="filterProps(this,'sold')">مُباع</button>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <div class="view-toggles">
+        <button class="view-btn active" title="شبكة">
+          <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        </button>
+        <button class="view-btn" title="قائمة">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        </button>
+      </div>
+      <select class="filter-tab" style="cursor:pointer;padding:7px 12px" onchange="">
+        <option>ترتيب: الأحدث</option>
+        <option>ترتيب: السعر (تصاعدي)</option>
+        <option>ترتيب: السعر (تنازلي)</option>
+        <option>ترتيب: المشاهدات</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Properties -->
+  <div class="properties-grid" id="propsGrid">
+
+    <div class="prop-card" data-cat="sale">
+      <div class="prop-img">
+        <div class="prop-img-bg" style="background:linear-gradient(135deg,#dbeafe,#93c5fd,#3b82f6)">🏠</div>
+        <span class="prop-status status-sale">للبيع</span>
+        <button class="prop-menu-btn">⋯</button>
+      </div>
+      <div class="prop-body">
+        <div class="prop-type-badge">شقة</div>
+        <div class="prop-title">شقة فاخرة - حي الياسمين</div>
+        <div class="prop-loc">
+          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          الرياض، المملكة العربية السعودية
+        </div>
+        <div class="prop-details">
+          <div class="prop-detail">🛏️ ٣ غرف</div>
+          <div class="prop-detail">🚿 ٢ حمام</div>
+          <div class="prop-detail">📐 ١٨٠م²</div>
+        </div>
+        <div class="prop-footer">
+          <div>
+            <div class="prop-price">١٢٠,٠٠٠$ <span>/السنة</span></div>
+            <div class="prop-views">
+              <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              ٢٤٣ مشاهدة
+            </div>
+          </div>
+          <div class="prop-actions">
+            <button class="btn-edit">تعديل</button>
+            <button class="btn-del">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="prop-card" data-cat="rent">
+      <div class="prop-img">
+        <div class="prop-img-bg" style="background:linear-gradient(135deg,#dcfce7,#86efac,#22c55e)">🏢</div>
+        <span class="prop-status status-rent">للإيجار</span>
+        <button class="prop-menu-btn">⋯</button>
+      </div>
+      <div class="prop-body">
+        <div class="prop-type-badge">عمارة</div>
+        <div class="prop-title">عمارة تجارية - وسط المدينة</div>
+        <div class="prop-loc">
+          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          جدة، المملكة العربية السعودية
+        </div>
+        <div class="prop-details">
+          <div class="prop-detail">🏢 ٥ طوابق</div>
+          <div class="prop-detail">🚗 ٢٠ موقف</div>
+          <div class="prop-detail">📐 ٨٠٠م²</div>
+        </div>
+        <div class="prop-footer">
+          <div>
+            <div class="prop-price">٨٠,٠٠٠$ <span>/السنة</span></div>
+            <div class="prop-views">
+              <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              ١٨٧ مشاهدة
+            </div>
+          </div>
+          <div class="prop-actions">
+            <button class="btn-edit">تعديل</button>
+            <button class="btn-del">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="prop-card" data-cat="sale">
+      <div class="prop-img">
+        <div class="prop-img-bg" style="background:linear-gradient(135deg,#fef3c7,#fcd34d,#f59e0b)">🏡</div>
+        <span class="prop-status status-sale">للبيع</span>
+        <button class="prop-menu-btn">⋯</button>
+      </div>
+      <div class="prop-body">
+        <div class="prop-type-badge">فيلا</div>
+        <div class="prop-title">فيلا مطلة على البحر</div>
+        <div class="prop-loc">
+          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          دبي، الإمارات العربية المتحدة
+        </div>
+        <div class="prop-details">
+          <div class="prop-detail">🛏️ ٥ غرف</div>
+          <div class="prop-detail">🚿 ٤ حمام</div>
+          <div class="prop-detail">📐 ٤٥٠م²</div>
+        </div>
+        <div class="prop-footer">
+          <div>
+            <div class="prop-price">٨٥٠,٠٠٠$</div>
+            <div class="prop-views">
+              <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              ٥٦٢ مشاهدة
+            </div>
+          </div>
+          <div class="prop-actions">
+            <button class="btn-edit">تعديل</button>
+            <button class="btn-del">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="prop-card" data-cat="pending">
+      <div class="prop-img">
+        <div class="prop-img-bg" style="background:linear-gradient(135deg,#fce7f3,#f9a8d4,#ec4899)">🏗️</div>
+        <span class="prop-status status-pending">قيد المراجعة</span>
+        <button class="prop-menu-btn">⋯</button>
+      </div>
+      <div class="prop-body">
+        <div class="prop-type-badge">شقة</div>
+        <div class="prop-title">شقة مفروشة - حي النخيل</div>
+        <div class="prop-loc">
+          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          الرياض، المملكة العربية السعودية
+        </div>
+        <div class="prop-details">
+          <div class="prop-detail">🛏️ ٢ غرف</div>
+          <div class="prop-detail">🚿 ١ حمام</div>
+          <div class="prop-detail">📐 ٩٠م²</div>
+        </div>
+        <div class="prop-footer">
+          <div>
+            <div class="prop-price">٣٥,٠٠٠$ <span>/السنة</span></div>
+            <div class="prop-views">
+              <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              ٨٩ مشاهدة
+            </div>
+          </div>
+          <div class="prop-actions">
+            <button class="btn-edit">تعديل</button>
+            <button class="btn-del">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="prop-card" data-cat="sold">
+      <div class="prop-img">
+        <div class="prop-img-bg" style="background:linear-gradient(135deg,#e0e7ff,#a5b4fc,#6366f1)">🏘️</div>
+        <span class="prop-status status-sold">مُباع</span>
+        <button class="prop-menu-btn">⋯</button>
+      </div>
+      <div class="prop-body">
+        <div class="prop-type-badge">تجاري</div>
+        <div class="prop-title">مستودع صناعي - المنطقة الشرقية</div>
+        <div class="prop-loc">
+          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          الدمام، المملكة العربية السعودية
+        </div>
+        <div class="prop-details">
+          <div class="prop-detail">📦 مستودع</div>
+          <div class="prop-detail">🚛 بوابات شحن</div>
+          <div class="prop-detail">📐 ١٢٠٠م²</div>
+        </div>
+        <div class="prop-footer">
+          <div>
+            <div class="prop-price">٣٢٠,٠٠٠$</div>
+            <div class="prop-views">
+              <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              ٤١٠ مشاهدة
+            </div>
+          </div>
+          <div class="prop-actions">
+            <button class="btn-edit" style="opacity:.5;pointer-events:none">تعديل</button>
+            <button class="btn-del">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="prop-card" data-cat="pending">
+      <div class="prop-img">
+        <div class="prop-img-bg" style="background:linear-gradient(135deg,#d1fae5,#6ee7b7,#10b981)">🌿</div>
+        <span class="prop-status status-pending">قيد المراجعة</span>
+        <button class="prop-menu-btn">⋯</button>
+      </div>
+      <div class="prop-body">
+        <div class="prop-type-badge">أرض</div>
+        <div class="prop-title">أرض سكنية - حي الربوة</div>
+        <div class="prop-loc">
+          <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          الرياض، المملكة العربية السعودية
+        </div>
+        <div class="prop-details">
+          <div class="prop-detail">📐 ٦٠٠م²</div>
+          <div class="prop-detail">🗺️ مخطط معتمد</div>
+        </div>
+        <div class="prop-footer">
+          <div>
+            <div class="prop-price">١٨٠,٠٠٠$</div>
+            <div class="prop-views">
+              <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              ١٢٦ مشاهدة
+            </div>
+          </div>
+          <div class="prop-actions">
+            <button class="btn-edit">تعديل</button>
+            <button class="btn-del">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <button class="page-btn">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <button class="page-btn active">١</button>
+    <button class="page-btn">٢</button>
+    <button class="page-btn">٣</button>
+    <span style="color:var(--text-muted);font-size:.85rem">...</span>
+    <button class="page-btn">٨</button>
+    <button class="page-btn">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">Maskn</div>
+      <p>منصة عقارية متكاملة تربط الوكلاء بالمشترين والمستأجرين بأعلى مستويات الثقة والمصداقية.</p>
+    </div>
+    <div class="footer-col">
+      <h4>الخدمات</h4>
+      <ul>
+        <li><a href="#">إضافة عقار</a></li>
+        <li><a href="#">البحث عن عقار</a></li>
+        <li><a href="#">تقييم العقارات</a></li>
+        <li><a href="#">إدارة الحجوزات</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>الشركة</h4>
+      <ul>
+        <li><a href="#">من نحن</a></li>
+        <li><a href="#">تواصل معنا</a></li>
+        <li><a href="#">المدونة</a></li>
+        <li><a href="#">الوظائف</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>الدعم</h4>
+      <ul>
+        <li><a href="#">مركز المساعدة</a></li>
+        <li><a href="#">سياسة الخصوصية</a></li>
+        <li><a href="#">الشروط والأحكام</a></li>
+        <li><a href="#">الإبلاغ عن مشكلة</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© ٢٠٢٦ Maskn. جميع الحقوق محفوظة.</p>
+    <div class="footer-socials">
+      <a class="social-btn" href="#" title="تويتر">
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+      </a>
+      <a class="social-btn" href="#" title="انستغرام">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+      <a class="social-btn" href="#" title="لينكد إن">
+        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('open');}
+function filterProps(btn,cat){
+  document.querySelectorAll('.filter-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.prop-card').forEach(c=>{
+    if(cat==='all'||c.dataset.cat===cat){c.style.display='';} else{c.style.display='none';}
+  });
+}
+</script>
+</body>
+</html>
