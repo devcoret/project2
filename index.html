@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Aman Real Estate</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+
+<body>
+
+    <header class="navbar">
+
+        <div class="logo">MASKN</div>
+
+        <nav class="nav">
+
+            <ul>
+
+                <li><a href="#">الرئيسية</a></li>
+                <li><a href="#properties">العقارات</a></li>
+                <li><a href="#why">لماذا نحن</a></li>
+                <li><a href="#">اضف عقار </a></li>
+
+            </ul>
+
+        </nav>
+
+        <div class="nav-actions">
+
+            <button id="langToggle">EN</button> <button id="darkMode"><i class="fa fa-moon"></i></button> <button
+                id="loginBtn">تسجيل الدخول</button>
+
+        </div>
+
+        <div class="menu-toggle" id="menuToggle">
+            <i class="fa fa-bars"></i>
+        </div>
+
+    </header>
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1 data-ar="اعثر على عقارك المثالي بأمان" data-en="Find Your Perfect Property">
+
+                اعثر على عقارك المثالي بأمان
+
+            </h1>
+
+            <p data-ar="أفضل منصة عقارية للبحث عن العقارات بسهولة"
+                data-en="Best real estate platform to find properties">
+
+                أفضل منصة عقارية للبحث عن العقارات بسهولة
+
+            </p>
+
+            <div class="search-box">
+
+                <select>
+                    <option>الموقع</option>
+                    <option>القاهرة</option>
+                    <option>الرياض</option>
+                </select>
+
+                <select>
+                    <option>نوع العقار</option>
+                    <option>فيلا</option>
+                    <option>شقة</option>
+                </select>
+
+                <select>
+                    <option>السعر</option>
+                    <option>100k</option>
+                    <option>500k</option>
+                </select>
+
+                <button>بحث</button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="categories">
+
+        <h2>استكشف خياراتنا المتنوعة</h2>
+
+        <div class="category-grid">
+
+            <div class="cat">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c">
+                <span>فلل</span>
+            </div>
+
+            <div class="cat">
+                <img src="https://images.unsplash.com/photo-1507089947368-19c1da9775ae">
+                <span>تجاري</span>
+            </div>
+
+            <div class="cat">
+                <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee">
+                <span>أراضي</span>
+            </div>
+
+            <div class="cat">
+                <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2">
+                <span>شقق</span>
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="properties" id="properties">
+
+        <h2>عقارات مميزة لهذا الأسبوع</h2>
+
+        <div class="property-grid">
+
+            <div class="property">
+
+                <i class="fa-regular fa-heart fav"></i>
+
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c">
+
+                <div class="info">
+
+                    <h3>قصر النرجس العصري</h3>
+                    <p>جدة - السعودية</p>
+
+                    <button onclick="window.location.href='property.html'">
+                        مشاهده التفاصيل
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="property">
+
+                <i class="fa-regular fa-heart fav"></i>
+
+                <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2">
+
+                <div class="info">
+
+                    <h3>فيلا بتصاميم مميزة</h3>
+                    <p>القاهرة - مصر</p>
+
+                    <button onclick="window.location.href='property.html'">
+                        مشاهده التفاصيل
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="property">
+
+                <i class="fa-regular fa-heart fav"></i>
+
+                <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be">
+
+                <div class="info">
+
+                    <h3>فيلا الاندلس الفاخرة</h3>
+                    <p>دبي - الامارات</p>
+
+                    <button onclick="window.location.href='property.html'">
+                        مشاهده التفاصيل
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="why" id="why">
+
+        <div class="why-container">
+
+            <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296">
+
+            <div>
+
+                <h3>الأمان هو أولويتنا القصوى</h3>
+
+                <ul>
+
+                    <li>مستشارون موثوقون</li>
+                    <li>معاملات مالية آمنة</li>
+                    <li>عقود إلكترونية ذكية</li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="steps" id="steps">
+
+        <h2>كيف تعمل المنصة</h2>
+
+        <div class="steps-grid">
+
+            <div class="step">
+                <i class="fa fa-search"></i>
+                <p>ابحث</p>
+            </div>
+
+            <div class="step">
+                <i class="fa fa-phone"></i>
+                <p>تواصل</p>
+            </div>
+
+            <div class="step">
+                <i class="fa fa-calendar"></i>
+                <p>احجز موعد</p>
+            </div>
+
+            <div class="step">
+                <i class="fa fa-home"></i>
+                <p>قم بالزيارة</p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <footer>
+
+        <p>© 2026 Aman Real Estate</p>
+
+    </footer>
+
+    <script src="style.js"></script>
+
+</body>
+
+</html>

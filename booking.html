@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>حجز زيارة</title>
+
+    <link rel="stylesheet" href="booking.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+
+    <nav class="navbar">
+
+        <div class="logo">مسكن</div>
+
+        <ul class="nav-links">
+
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="#">العقارات</a></li>
+            <!-- <li><a href="#">لماذا نحن</a></li> -->
+            <!-- <li><a href="#">كيف تعمل المنصة</a></li> -->
+            <li><a href="#">اتصل بنا</a></li>
+
+        </ul>
+
+        <div class="nav-buttons">
+
+            <button id="darkToggle">🌙</button>
+
+            <button class="login">تسجيل الدخول</button>
+
+        </div>
+
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+
+    </nav>
+
+
+    <!-- Booking -->
+
+    <section class="booking-section">
+
+        <div class="booking-container">
+
+
+            <!-- Contact -->
+
+            <div class="contact">
+
+                <h3>معلومات الاتصال</h3>
+
+                <div class="info">
+                    <p>📞 الهاتف</p>
+                    <span>4634765684</span>
+                </div>
+
+                <div class="info">
+                    <p>✉ البريد</p>
+                    <span>mask@gmail.com</span>
+                </div>
+
+                <div class="info">
+                    <p>📍 العنوان</p>
+                    <span>جدة السعودية</span>
+                </div>
+
+                <textarea placeholder="اكتب رسالة"></textarea>
+
+            </div>
+
+
+            <!-- Form -->
+
+            <div class="form">
+
+                <h2>احجز زيارة</h2>
+
+                <input type="text" placeholder="اكتب الاسم">
+
+                <input type="email" placeholder="اكتب بريدك">
+
+                <label>اختر التاريخ</label>
+
+                <input type="date">
+
+                <label>حدد الساعة</label>
+
+                <div class="times">
+
+                    <button>10:00</button>
+                    <button>12:00</button>
+                    <button>3:00</button>
+                    <button>6:00</button>
+
+                </div>
+
+                <button class="confirm">تأكيد الحجز</button>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- Popup -->
+
+    <div class="popup">
+
+        <div class="popup-box">
+
+            <h3>تم الحجز بنجاح 🎉</h3>
+
+            <p>سيتم التواصل معك قريباً</p>
+
+            <button onclick="closePopup()">حسناً</button>
+
+        </div>
+
+    </div>
+
+
+    <script src="booking.js"></script>
+
+</body>
+
+</html>

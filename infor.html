@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>تفاصيل العقار</title>
+
+    <link rel="stylesheet" href="infor.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">مسكن</div>
+
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">الرئيسية</a></li>
+
+                <li><a href="#">العقارات</a></li>
+
+                <li><a href="add_property.html">أضف عقار</a></li>
+
+                <li><a href="#">تواصل معنا</a></li>
+            </ul>
+        </nav>
+
+        <button class="login">تسجيل الدخول</button>
+
+    </nav>
+
+
+    <!-- SEARCH -->
+
+    <section class="search-section">
+
+        <div class="search-box">
+
+            <input type="text" placeholder="ابحث عن مدينة">
+
+            <select>
+
+                <option>نوع العقار</option>
+                <option>فيلا</option>
+                <option>شقة</option>
+                <option>قصر</option>
+
+            </select>
+
+            <select>
+
+                <option>السعر</option>
+                <option>100k - 300k</option>
+                <option>300k - 500k</option>
+                <option>500k+</option>
+
+            </select>
+
+            <button>بحث</button>
+
+        </div>
+
+    </section>
+
+
+    <div class="container">
+
+
+        <!-- SLIDER -->
+
+        <div class="slider-container">
+
+            <img id="mainSlider" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c">
+
+            <div class="thumbnails">
+
+                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c">
+
+                <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2">
+
+                <img src="image.3/da80d4485e4a19b133def1afd6e68a00b7b555b0.jpg">
+
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c">
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTION BUTTONS -->
+
+        <div class="actions">
+
+            <button id="fav">❤️</button>
+
+            <button id="share">🔗</button>
+
+        </div>
+
+
+        <div class="content">
+
+            <!-- DETAILS -->
+
+            <div class="details fade">
+
+                <h1>قصر الترحيب العصري</h1>
+
+                <p class="location">📍 مكة المكرمة</p>
+
+                <div class="features">
+
+                    <div>🛏 3 غرف</div>
+                    <div>🛁 2 حمام</div>
+                    <div>📐 300 م²</div>
+                    <div>🚗 موقف سيارات</div>
+
+                </div>
+
+                <h2>وصف العقار</h2>
+
+                <p>
+
+                    هذا العقار يتميز بتصميم عصري فاخر ومساحات واسعة
+                    وموقع استراتيجي قريب من جميع الخدمات والمرافق.
+
+                </p>
+
+
+                <h2>مواصفات العقار</h2>
+
+                <div class="specs">
+
+                    <div>نوع العقار: فيلا</div>
+                    <div>الحالة: جديد</div>
+                    <div>التشطيب: فاخر</div>
+                    <div>سنة البناء: 2024</div>
+
+                </div>
+
+
+                <!-- OWNER CARD -->
+
+                <div class="owner-card">
+
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg">
+
+                    <div>
+
+                        <h3>طارق السيد</h3>
+
+                        <p>مالك العقار</p>
+
+                        <button class="contactOwner">تواصل</button>
+
+                    </div>
+
+                </div>
+
+
+                <h2>الموقع</h2>
+
+                <iframe src="https://maps.google.com/maps?q=cairo&t=&z=13&ie=UTF8&iwloc=&output=embed">
+                </iframe>
+
+            </div>
+
+
+            <!-- SIDEBAR -->
+
+            <div class="sidebar">
+
+                <div class="price">500000$</div>
+
+                <button class="contact">تواصل مع المالك</button>
+
+                <button class="whatsapp">واتساب</button>
+
+                <button class="visit">حجز زيارة</button>
+
+
+                <h3>حاسبة التمويل</h3>
+
+                <input id="loanAmount" placeholder="قيمة العقار">
+
+                <input id="years" placeholder="سنوات السداد">
+
+                <button onclick="calculate()">احسب القسط</button>
+
+                <p id="result"></p>
+
+            </div>
+
+        </div>
+
+
+        <!-- SIMILAR PROPERTIES -->
+
+        <h2 class="similar-title">عقارات مشابهة</h2>
+
+        <div class="similar">
+
+            <div class="card">
+
+                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c">
+
+                <h4>فيلا فاخرة</h4>
+
+                <p>450000$</p>
+
+            </div>
+
+            <div class="card">
+
+                <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2">
+
+                <h4>فيلا حديثة</h4>
+
+                <p>520000$</p>
+
+            </div>
+
+            <div class="card">
+
+                <img src="image.3/01b627ba95bfa14e1cdcdb4ebab27aed0bb11ea7.jpg">
+
+                <h4>قصر عصري</h4>
+
+                <p>620000$</p>
+
+            </div>
+
+        </div>
+
+
+        <!-- PROPERTY GRID -->
+
+        <section class="properties">
+
+            <h2>عقارات أخرى</h2>
+
+            <div class="property-grid">
+
+                <div class="property">
+
+                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c">
+
+                    <h4>فيلا فاخرة</h4>
+
+                    <p>450000$</p>
+
+                </div>
+
+                <div class="property">
+
+                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2">
+
+                    <h4>فيلا حديثة</h4>
+
+                    <p>520000$</p>
+
+                </div>
+
+                <div class="property">
+
+                    <img src="image.3/da80d4485e4a19b133def1afd6e68a00b7b555b0.jpg">
+
+                    <h4>قصر عصري</h4>
+
+                    <p>620000$</p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    <!-- LOGIN MODAL -->
+
+    <div class="modal" id="loginModal">
+
+        <div class="modal-content">
+
+            <span class="closeModal">&times;</span>
+
+            <h2>تسجيل الدخول</h2>
+
+            <input type="text" placeholder="البريد الإلكتروني">
+
+            <input type="password" placeholder="كلمة المرور">
+
+            <button class="modalBtn">دخول</button>
+
+            <p>ليس لديك حساب؟ إنشاء حساب</p>
+
+        </div>
+
+    </div>
+
+
+    <script src="infor.js"></script>
+
+</body>
+
+</html>
