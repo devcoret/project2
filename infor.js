@@ -82,3 +82,66 @@ function calculate() {
     document.getElementById("result").innerText = "القسط الشهري: " + monthly.toFixed(0)
 
 }
+let favorites = []
+
+function saveFavorite(name) {
+
+    favorites.push(name)
+
+    localStorage.setItem("favorites", JSON.stringify(favorites))
+
+    alert("تم الحفظ في المفضلة")
+
+}
+function bookProperty() {
+
+    alert("تم ارسال طلب الحجز")
+
+}
+function sendMsg() {
+
+    let msg = document.getElementById("msg").value
+
+    let div = document.createElement("div")
+
+    div.innerText = "انت: " + msg
+
+    document.getElementById("chatBox").appendChild(div)
+
+}
+let otp
+
+function sendOTP() {
+
+    otp = Math.floor(100000 + Math.random() * 900000)
+
+    alert("رمز التحقق " + otp)
+
+}
+
+function verifyOTP() {
+
+    let c = document.getElementById("code").value
+
+    if (c == otp) {
+
+        alert("تم التوثيق")
+
+    } else {
+
+        alert("رمز خاطئ")
+
+    }
+
+}
+function rateOwner(r) {
+
+    document.getElementById("ratingResult").innerText = "تم تقييم المالك " + r + " نجوم"
+
+}
+function reportProperty() {
+
+    alert("تم ارسال البلاغ وسيتم مراجعته")
+
+}
+
