@@ -306,8 +306,111 @@
             <p>ليس لديك حساب؟ إنشاء حساب</p>
 
         </div>
-
     </div>
+
+    <section class="report-section">
+
+        <h2>تبليغ عن عقار مشبوه</h2>
+
+        <textarea placeholder="اكتب سبب البلاغ"></textarea>
+
+        <button onclick="reportProperty()">ارسال البلاغ</button>
+
+    </section>
+    <section class="rating">
+
+        <h2>تقييم المالك</h2>
+
+        <span onclick="rateOwner(1)">⭐</span>
+        <span onclick="rateOwner(2)">⭐</span>
+        <span onclick="rateOwner(3)">⭐</span>
+        <span onclick="rateOwner(4)">⭐</span>
+        <span onclick="rateOwner(5)">⭐</span>
+
+        <p id="ratingResult"></p>
+
+    </section>
+    <section class="verification">
+
+        <h2>توثيق المالك</h2>
+
+        <p>صورة البطاقة الأمامية</p>
+        <input type="file">
+
+        <p>صورة البطاقة الخلفية</p>
+        <input type="file">
+
+        <p>سيلفي مع البطاقة</p>
+        <input type="file">
+
+        <button>ارسال التوثيق</button>
+
+    </section>
+    <section class="otp">
+
+        <h2>توثيق رقم الهاتف</h2>
+
+        <input id="phone" placeholder="رقم الهاتف">
+
+        <button onclick="sendOTP()">ارسال رمز التحقق</button>
+
+        <input id="code" placeholder="رمز التحقق">
+
+        <button onclick="verifyOTP()">تأكيد</button>
+
+    </section>
+    <section class="chat">
+
+        <h2>مراسلة المالك</h2>
+
+        <div id="chatBox"></div>
+
+        <input id="msg">
+
+        <button onclick="sendMsg()">ارسال</button>
+
+    </section>
+    <section class="booking">
+
+        <h2>حجز العقار</h2>
+
+        <input type="date">
+
+        <input type="time">
+
+        <button onclick="bookProperty()">حجز</button>
+
+    </section>
+    <section class="favorites">
+
+        <h2>العقارات المفضلة</h2>
+
+        <div id="favList"></div>
+
+    </section>
+    <section class="privacy">
+
+        <h2>سياسة الخصوصية</h2>
+
+        <p>
+
+            نحن نحافظ على بيانات المستخدمين ولا يتم مشاركة المعلومات مع أي طرف ثالث.
+
+        </p>
+
+    </section>
+    <section class="security">
+
+        <h2>رسالة أمان</h2>
+
+        <p>
+
+            كل العقارات يتم مراجعتها وتوثيقها لحماية المستخدمين من الاحتيال.
+
+        </p>
+
+    </section>
+    <!-- </div> -->
 
 
     <script src="infor.js"></script>
