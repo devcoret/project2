@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المفضلة - عقارات</title>
+    <link rel="stylesheet" href="fav.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <button class="menu-btn" id="menuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="logo">
+                    <i class="fas fa-heart"></i>
+                    <h1>المفضلة</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" id="notifBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge" id="notifBadge">5</span>
+                    </button>
+                    <button class="icon-btn"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay" id="menuOverlay"></div>
+    <nav class="mobile-menu" id="mobileMenu">
+        <div class="menu-header">
+            <h2>القائمة</h2>
+            <button class="close-menu" id="closeMenu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="menu-items">
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="fav.html" class="active"><i class="fas fa-heart"></i> المفضلة</a></li>
+            <li><a href="notific.html"><i class="fas fa-bell"></i> الإشعارات</a></li>
+            <li><a href="#"><i class="fas fa-search"></i> بحث</a></li>
+            <li><a href="#"><i class="fas fa-user"></i> حسابي</a></li>
+            <li><a href="#"><i class="fas fa-cog"></i> الإعدادات</a></li>
+        </ul>
+    </nav>
+
+    <!-- Tabs -->
+    <nav class="tabs">
+        <div class="container">
+            <button class="tab active" data-filter="all">الكل</button>
+            <button class="tab" data-filter="villa">فلل</button>
+            <button class="tab" data-filter="apartment">شقق</button>
+            <button class="tab" data-filter="rent">إيجار</button>
+        </div>
+    </nav>
+
+    <!-- Properties Grid -->
+    <main class="container">
+        <div class="properties-grid" id="propertiesGrid">
+
+            <!-- Card 1 -->
+            <article class="card" data-type="apartment" data-category="sale" id="card1">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&h=400&fit=crop"
+                        alt="شقة">
+                    <span class="status available">متاحة</span>
+                    <button class="fav-btn active" onclick="toggleFav(this, 'card1')" data-card-id="card1">
+                        <i class="fas fa-star"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <h3>شقة في التجمع الخامس</h3>
+                    <p class="details">180 م² • 3 غرف نوم</p>
+                    <div class="price-row">
+                        <span class="price">3,250,000 <small>جنيه</small></span>
+                        <span class="time">منذ 3 أيام</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Card 2 -->
+            <article class="card" data-type="villa" data-category="sale" id="card2">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=600&h=400&fit=crop"
+                        alt="فيلا">
+                    <span class="status available">متاحة</span>
+                    <button class="fav-btn active" onclick="toggleFav(this, 'card2')" data-card-id="card2">
+                        <i class="fas fa-star"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <h3>فيلا في الشيخ زايد</h3>
+                    <p class="details">550 م² • 5 غرف نوم • مسبح</p>
+                    <div class="price-row">
+                        <span class="price">15,000,000 <small>جنيه</small></span>
+                        <span class="time">منذ أسبوع</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Card 3 -->
+            <article class="card" data-type="apartment" data-category="rent" id="card3">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&h=400&fit=crop"
+                        alt="شقة">
+                    <span class="status rented">مؤجرة</span>
+                    <button class="fav-btn" onclick="toggleFav(this, 'card3')" data-card-id="card3">
+                        <i class="fas fa-star"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <h3>شقة للإيجار في 6 أكتوبر</h3>
+                    <p class="details">110 م² • تورتاني</p>
+                    <div class="price-row">
+                        <span class="price">9,000 <small>جنيه/شهر</small></span>
+                        <span class="time">منذ 6 أيام</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Card 4 -->
+            <article class="card" data-type="villa" data-category="rent" id="card4">
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&h=400&fit=crop"
+                        alt="فيلا">
+                    <span class="status available">متاحة</span>
+                    <button class="fav-btn active" onclick="toggleFav(this, 'card4')" data-card-id="card4">
+                        <i class="fas fa-star"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <h3>فيلا للإيجار في 6 أكتوبر</h3>
+                    <p class="details">450 م² • 4 غرف نوم</p>
+                    <div class="price-row">
+                        <span class="price">30,000 <small>جنيه/شهر</small></span>
+                        <span class="time">منذ 5 أيام</span>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <!-- Notifications Panel -->
+    <div class="overlay" id="overlay"></div>
+    <div class="notif-panel" id="notifPanel">
+        <div class="notif-header">
+            <h2><i class="fas fa-bell"></i> الإشعارات</h2>
+            <button class="close-btn" onclick="closeNotif()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="notif-list" id="notifList">
+            <div class="notif-item unread" data-id="1">
+                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=100" alt="">
+                <div class="notif-content">
+                    <h4>شقة في التجمع الخامس</h4>
+                    <p>هل أنت مهتم بالتواصل؟</p>
+                    <span>منذ 5 دقائق</span>
+                </div>
+            </div>
+            <div class="notif-item unread" data-id="2">
+                <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=100" alt="">
+                <div class="notif-content">
+                    <h4>الفيلا البيك في 6 أكتوبر</h4>
+                    <p>تم استنثارها!</p>
+                    <span>منذ ساعة</span>
+                </div>
+            </div>
+            <div class="notif-item" data-id="3">
+                <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=100" alt="">
+                <div class="notif-content">
+                    <h4>تم تحديث السعر</h4>
+                    <p>3,500 جنيه شهرياً</p>
+                    <span>منذ يومين</span>
+                </div>
+            </div>
+        </div>
+        <div class="notif-footer">
+            <a href="notific.html" class="show-more-btn">
+                عرض المزيد <i class="fas fa-arrow-left"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script src="fav.js"></script>
+</body>
+
+</html>

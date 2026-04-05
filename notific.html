@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإشعارات - عقارات</title>
+    <link rel="stylesheet" href="notific.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="menuOverlay"></div>
+
+    <!-- Mobile Menu -->
+    <nav class="mobile-menu" id="mobileMenu">
+        <div class="menu-header">
+            <h2>القائمة</h2>
+            <button class="close-menu" id="closeMenu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="menu-items">
+            <li><a href="index.html"><i class="fas fa-home"></i> الرئيسية</a></li>
+            <li><a href="fav.html"><i class="fas fa-heart"></i> المفضلة</a></li>
+            <li><a href="notific.html" class="active"><i class="fas fa-bell"></i> الإشعارات</a></li>
+            <li><a href="#"><i class="fas fa-search"></i> بحث</a></li>
+            <li><a href="#"><i class="fas fa-user"></i> حسابي</a></li>
+            <li><a href="#"><i class="fas fa-cog"></i> الإعدادات</a></li>
+        </ul>
+    </nav>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <button class="menu-btn" id="menuToggle" aria-label="القائمة">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="header-center">
+                    <i class="fas fa-bell"></i>
+                    <h1>الإشعارات</h1>
+                </div>
+                <div class="header-actions">
+                    <!-- <button class="icon-btn" aria-label="الرسائل"> -->
+                    <!-- <i class="fas fa-comment"></i> -->
+                    <!-- <span class="badge">5</span> -->
+                    <!-- </button> -->
+                    <button class="icon-btn" aria-label="البحث">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Tabs -->
+    <nav class="tabs-section">
+        <div class="container">
+            <div class="tabs">
+                <button class="tab-btn active" data-filter="all">الكل</button>
+                <button class="tab-btn" data-filter="unread">غير مقروءة</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="notifications-list" id="notificationsList">
+
+                <!-- Notification 1 -->
+                <article class="notification-card unread">
+                    <div class="card-main">
+                        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=200&h=200&fit=crop"
+                            alt="شقة في التجمع الخامس" loading="lazy">
+                        <div class="card-info">
+                            <h3>الشقة فيلا ليليع في التجمع الخامس</h3>
+                            <p>في التجمع الخامس | لا تزال متاحة<br>هل أهتم بالتواصل مع المالك؟</p>
+                            <div class="card-meta">
+                                <span class="status available">متاحة</span>
+                                <span class="time">قبل 3 ساعات</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-side">
+                        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=100&h=100&fit=crop"
+                            alt="" loading="lazy">
+                        <div class="icon-badge star">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <button class="dots-btn" aria-label="المزيد">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                </article>
+
+                <!-- Notification 2 -->
+                <article class="notification-card unread">
+                    <div class="card-main">
+                        <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=200&h=200&fit=crop"
+                            alt="فيلا في 6 أكتوبر" loading="lazy">
+                        <div class="card-info">
+                            <h3>الفيلا في 6 أكتوبر لم يعد الشيخ زايد</h3>
+                            <p>نم 550 تصرف - 5 غرف سياحة</p>
+                            <div class="card-meta">
+                                <span class="time">قبل 1 يوم</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-side">
+                        <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=100&h=100&fit=crop"
+                            alt="" loading="lazy">
+                        <div class="icon-badge bookmark">
+                            <i class="fas fa-bookmark"></i>
+                        </div>
+                    </div>
+                    <button class="dots-btn" aria-label="المزيد">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                </article>
+
+                <!-- Notification 3 -->
+                <article class="notification-card">
+                    <div class="card-main">
+                        <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=200&h=200&fit=crop"
+                            alt="شقة في مدينة نصر" loading="lazy">
+                        <div class="card-info">
+                            <h3>تم تحديث سعر الشقة في مدينة نصر</h3>
+                            <p>8,000 جنيه شهرياً.</p>
+                            <div class="card-meta">
+                                <span class="status updated">تم تحديث السعر</span>
+                                <span class="time">قبل يومين</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-side">
+                        <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=100&h=100&fit=crop"
+                            alt="" loading="lazy">
+                        <div class="icon-badge star">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <button class="dots-btn" aria-label="المزيد">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                </article>
+
+                <!-- Notification 4 -->
+                <article class="notification-card">
+                    <div class="card-main">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=200&h=200&fit=crop"
+                            alt="فيلا في 6 أكتوبر" loading="lazy">
+                        <div class="card-info">
+                            <h3>تم إضافة فيلا جديدة في مدينة 6 أكتوبر</h3>
+                            <p>اغ في الشيخ زايد.</p>
+                            <div class="card-meta">
+                                <span class="status matches">مطابق لبحثك</span>
+                                <span class="time">قبل 4 أيام</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-side">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=100&h=100&fit=crop"
+                            alt="" loading="lazy">
+                        <div class="icon-badge star">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <button class="dots-btn" aria-label="المزيد">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                </article>
+
+                <!-- Notification 5 -->
+                <article class="notification-card">
+                    <div class="card-main">
+                        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=200&h=200&fit=crop"
+                            alt="شقة في المعادي" loading="lazy">
+                        <div class="card-info">
+                            <h3>تم تخفيض سعر بمقدار ٥٠٠ في المعادي</h3>
+                            <p>السعر الجديد بعد الخصم</p>
+                            <div class="card-meta">
+                                <span class="status updated">تم تحديث السعر</span>
+                                <span class="time">قبل أسبوع</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-side">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=100&h=100&fit=crop"
+                            alt="" loading="lazy">
+                        <div class="icon-badge star">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <button class="dots-btn" aria-label="المزيد">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                </article>
+
+                <!-- Notification 6 -->
+                <article class="notification-card">
+                    <div class="card-main">
+                        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=200&h=200&fit=crop"
+                            alt="فيلا في التجمع الخامس" loading="lazy">
+                        <div class="card-info">
+                            <h3>تم تحديث سعر الفيلا في التجمع الخامس</h3>
+                            <p>الجديد 3,000,000 جنيه.</p>
+                            <div class="card-meta">
+                                <span class="status updated">تم تحديث السعر</span>
+                                <span class="time">قبل 10 أيام</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-side">
+                        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=100&h=100&fit=crop"
+                            alt="" loading="lazy">
+                        <div class="icon-badge star">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <button class="dots-btn" aria-label="المزيد">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                </article>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script src="notific.js"></script>
+</body>
+
+</html>

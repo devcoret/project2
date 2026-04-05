@@ -1,0 +1,995 @@
+/* ========================================
+   Reset & Variables
+   ======================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --green: #2D6A4F;
+    --red: #E63946;
+    --gray: #6C757D;
+    --light: #E9ECEF;
+    --bg: #F8F9FA;
+    --white: #FFFFFF;
+    --text: #1A1A2E;
+    --shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.1);
+    --radius: 16px;
+    --transition: all 0.3s ease;
+}
+
+/* ========================================
+   Base
+   ======================================== */
+body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ========================================
+   Header
+   ======================================== */
+.main-header {
+    background: var(--white);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+}
+
+.menu-btn,
+.icon-btn {
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px;
+    color: var(--text);
+    border-radius: 10px;
+    transition: var(--transition);
+    position: relative;
+}
+
+.menu-btn:hover,
+.icon-btn:hover {
+    background: var(--bg);
+}
+
+.header-center {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-center i {
+    color: var(--red);
+    font-size: 24px;
+}
+
+.header-center h1 {
+    font-size: 26px;
+    font-weight: 800;
+}
+
+.badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: var(--red);
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 5px;
+    border-radius: 8px;
+    font-weight: 700;
+}
+
+.header-actions {
+    display: flex;
+    gap: 6px;
+}
+
+/* ========================================
+   Tabs
+   ======================================== */
+.tabs-section {
+    background: var(--white);
+    border-bottom: 1px solid var(--light);
+}
+
+.tabs {
+    display: flex;
+    gap: 20px;
+    padding: 16px 0;
+}
+
+.tab-btn {
+    padding: 8px 20px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gray);
+    cursor: pointer;
+    position: relative;
+    transition: var(--transition);
+}
+
+.tab-btn:hover {
+    color: var(--text);
+}
+
+.tab-btn.active {
+    color: var(--red);
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -17px;
+    right: 50%;
+    transform: translateX(50%);
+    width: 30px;
+    height: 3px;
+    background: var(--red);
+    border-radius: 2px;
+}
+
+/* ========================================
+   Main Content
+   ======================================== */
+.main-content {
+    padding: 24px 0 60px;
+}
+
+/* ========================================
+   Notification Card
+   ======================================== */
+.notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.notification-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 18px;
+    display: flex;
+    gap: 16px;
+    position: relative;
+    transition: var(--transition);
+    cursor: pointer;
+    align-items: flex-start;
+}
+
+.notification-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+.notification-card.unread::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    right: 10px;
+    width: 10px;
+    height: 10px;
+    background: var(--red);
+    border-radius: 50%;
+}
+
+/* Card Main Section */
+.card-main {
+    display: flex;
+    gap: 14px;
+    flex: 1;
+    min-width: 0;
+}
+
+.card-main img {
+    width: 90px;
+    height: 90px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.card-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.card-info h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    line-height: 1.5;
+    color: var(--text);
+}
+
+.card-info p {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+
+.card-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Status Badges */
+.status {
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.status.available {
+    background: var(--green);
+}
+
+.status.updated {
+    background: var(--green);
+}
+
+.status.matches {
+    background: var(--green);
+}
+
+.time {
+    font-size: 12px;
+    color: var(--gray);
+}
+
+/* Card Side Section */
+.card-side {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.card-side img {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.icon-badge {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #fff;
+}
+
+.icon-badge.star {
+    background: rgba(244, 162, 97, 0.95);
+}
+
+.icon-badge.bookmark {
+    background: rgba(230, 57, 70, 0.95);
+}
+
+/* Dots Button */
+.dots-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 6px;
+    color: var(--gray);
+    font-size: 16px;
+    align-self: flex-start;
+    border-radius: 8px;
+    transition: var(--transition);
+}
+
+.dots-btn:hover {
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* ========================================
+   Toast
+   ======================================== */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--text);
+    color: #fff;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    opacity: 0;
+    transition: var(--transition);
+    z-index: 2000;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* ========================================
+   Responsive - Tablet
+   ======================================== */
+@media (max-width: 768px) {
+    .header-center h1 {
+        font-size: 22px;
+    }
+
+    .header-center i {
+        font-size: 20px;
+    }
+
+    .notification-card {
+        padding: 14px;
+        gap: 12px;
+    }
+
+    .card-main img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .card-side img {
+        width: 55px;
+        height: 55px;
+    }
+
+    .card-info h3 {
+        font-size: 14px;
+    }
+}
+
+/* ========================================
+   Responsive - Mobile
+   ======================================== */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 12px;
+    }
+
+    .header-content {
+        padding: 12px 0;
+    }
+
+    .header-center h1 {
+        font-size: 20px;
+    }
+
+    .header-center i {
+        font-size: 18px;
+    }
+
+    .notification-card {
+        padding: 12px;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .card-main {
+        width: 100%;
+    }
+
+    .card-main img {
+        width: 65px;
+        height: 65px;
+        border-radius: 10px;
+    }
+
+    .card-side {
+        position: absolute;
+        top: 12px;
+        left: 40px;
+    }
+
+    .card-side img {
+        width: 45px;
+        height: 45px;
+    }
+
+    .icon-badge {
+        width: 20px;
+        height: 20px;
+        font-size: 9px;
+    }
+
+    .card-info h3 {
+        font-size: 13px;
+    }
+
+    .card-info p {
+        font-size: 12px;
+    }
+
+    .dots-btn {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+    }
+}
+
+/* ========================================
+   Reset & Variables
+   ======================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --green: #2D6A4F;
+    --red: #E63946;
+    --gray: #6C757D;
+    --light: #E9ECEF;
+    --bg: #F8F9FA;
+    --white: #FFFFFF;
+    --text: #1A1A2E;
+    --shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.1);
+    --radius: 16px;
+    --transition: all 0.3s ease;
+}
+
+/* ========================================
+   Base
+   ======================================== */
+body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ========================================
+   Mobile Menu
+   ======================================== */
+.mobile-menu-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+    z-index: 998;
+}
+
+.mobile-menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 280px;
+    height: 100%;
+    background: var(--white);
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+    transform: translateX(100%);
+    transition: var(--transition);
+    z-index: 999;
+    overflow-y: auto;
+}
+
+.mobile-menu.active {
+    transform: translateX(0);
+}
+
+.menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid var(--light);
+}
+
+.menu-header h2 {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.close-menu {
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    color: var(--text);
+    transition: var(--transition);
+}
+
+.close-menu:hover {
+    background: var(--bg);
+}
+
+.menu-items {
+    list-style: none;
+    padding: 10px;
+}
+
+.menu-items li {
+    margin-bottom: 5px;
+}
+
+.menu-items a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: var(--text);
+    border-radius: 12px;
+    transition: var(--transition);
+    font-weight: 600;
+}
+
+.menu-items a:hover,
+.menu-items a.active {
+    background: var(--bg);
+    color: var(--red);
+}
+
+.menu-items a i {
+    width: 24px;
+    font-size: 18px;
+}
+
+/* ========================================
+   Header
+   ======================================== */
+.main-header {
+    background: var(--white);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+}
+
+.menu-btn,
+.icon-btn {
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px;
+    color: var(--text);
+    border-radius: 10px;
+    transition: var(--transition);
+    position: relative;
+}
+
+.menu-btn:hover,
+.icon-btn:hover {
+    background: var(--bg);
+}
+
+.header-center {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-center i {
+    color: var(--red);
+    font-size: 24px;
+}
+
+.header-center h1 {
+    font-size: 26px;
+    font-weight: 800;
+}
+
+.badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: var(--red);
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 5px;
+    border-radius: 8px;
+    font-weight: 700;
+}
+
+.header-actions {
+    display: flex;
+    gap: 6px;
+}
+
+/* ========================================
+   Tabs
+   ======================================== */
+.tabs-section {
+    background: var(--white);
+    border-bottom: 1px solid var(--light);
+}
+
+.tabs {
+    display: flex;
+    gap: 20px;
+    padding: 16px 0;
+}
+
+.tab-btn {
+    padding: 8px 20px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gray);
+    cursor: pointer;
+    position: relative;
+    transition: var(--transition);
+}
+
+.tab-btn:hover {
+    color: var(--text);
+}
+
+.tab-btn.active {
+    color: var(--red);
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -17px;
+    right: 50%;
+    transform: translateX(50%);
+    width: 30px;
+    height: 3px;
+    background: var(--red);
+    border-radius: 2px;
+}
+
+/* ========================================
+   Main Content
+   ======================================== */
+.main-content {
+    padding: 24px 0 60px;
+}
+
+/* ========================================
+   Notification Card
+   ======================================== */
+.notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.notification-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 18px;
+    display: flex;
+    gap: 16px;
+    position: relative;
+    transition: var(--transition);
+    cursor: pointer;
+    align-items: flex-start;
+}
+
+.notification-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+.notification-card.unread::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    right: 10px;
+    width: 10px;
+    height: 10px;
+    background: var(--red);
+    border-radius: 50%;
+}
+
+/* Card Main Section */
+.card-main {
+    display: flex;
+    gap: 14px;
+    flex: 1;
+    min-width: 0;
+}
+
+.card-main img {
+    width: 90px;
+    height: 90px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.card-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.card-info h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    line-height: 1.5;
+    color: var(--text);
+}
+
+.card-info p {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.7;
+    margin-bottom: 10px;
+}
+
+.card-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Status Badges */
+.status {
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.status.available {
+    background: var(--green);
+}
+
+.status.updated {
+    background: var(--green);
+}
+
+.status.matches {
+    background: var(--green);
+}
+
+.time {
+    font-size: 12px;
+    color: var(--gray);
+}
+
+/* Card Side Section */
+.card-side {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.card-side img {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.icon-badge {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #fff;
+}
+
+.icon-badge.star {
+    background: rgba(244, 162, 97, 0.95);
+}
+
+.icon-badge.bookmark {
+    background: rgba(230, 57, 70, 0.95);
+}
+
+/* Dots Button */
+.dots-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 6px;
+    color: var(--gray);
+    font-size: 16px;
+    align-self: flex-start;
+    border-radius: 8px;
+    transition: var(--transition);
+}
+
+.dots-btn:hover {
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* ========================================
+   Toast
+   ======================================== */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--text);
+    color: #fff;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    opacity: 0;
+    transition: var(--transition);
+    z-index: 2000;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* ========================================
+   Responsive - Tablet
+   ======================================== */
+@media (max-width: 768px) {
+    .header-center h1 {
+        font-size: 22px;
+    }
+
+    .header-center i {
+        font-size: 20px;
+    }
+
+    .notification-card {
+        padding: 14px;
+        gap: 12px;
+    }
+
+    .card-main img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .card-side img {
+        width: 55px;
+        height: 55px;
+    }
+
+    .card-info h3 {
+        font-size: 14px;
+    }
+}
+
+/* ========================================
+   Responsive - Mobile
+   ======================================== */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 12px;
+    }
+
+    .header-content {
+        padding: 12px 0;
+    }
+
+    .header-center h1 {
+        font-size: 20px;
+    }
+
+    .header-center i {
+        font-size: 18px;
+    }
+
+    .notification-card {
+        padding: 12px;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .card-main {
+        width: 100%;
+    }
+
+    .card-main img {
+        width: 65px;
+        height: 65px;
+        border-radius: 10px;
+    }
+
+    .card-side {
+        position: absolute;
+        top: 12px;
+        left: 40px;
+    }
+
+    .card-side img {
+        width: 45px;
+        height: 45px;
+    }
+
+    .icon-badge {
+        width: 20px;
+        height: 20px;
+        font-size: 9px;
+    }
+
+    .card-info h3 {
+        font-size: 13px;
+    }
+
+    .card-info p {
+        font-size: 12px;
+    }
+
+    .dots-btn {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+    }
+
+    .mobile-menu {
+        width: 100%;
+        max-width: 280px;
+    }
+}
