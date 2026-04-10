@@ -155,6 +155,25 @@
             <p>نلتزم بالرد على الشكاوى القانونية خلال <strong>٥ أيام عمل</strong>، مع الاحتفاظ بسجل الإبلاغ كدليل
                 إلكتروني معتمد.</p>
         </section>
+        <!-- 🔹 قسم الموافقة الصريحة -->
+        <section class="consent-section">
+            <div class="consent-box">
+                <label class="consent-label">
+                    <input type="checkbox" id="agreeCheckbox" required>
+                    <span>
+                        أقر بأنني قد قرأت وفهمت <strong>الشروط القانونية، سياسة الخصوصية، وشروط الاستخدام</strong>
+                        الخاصة بمنصة <strong>مسكن</strong>، وأوافق عليها صراحةً.
+                        <br><br>
+                        <small>✅ أتفهم أن مسكن وسيط تقني فقط، ولا تتحمل مسؤولية أي تعامل يتم خارج نطاق المنصة.</small>
+                    </span>
+                </label>
+
+                <div class="consent-actions" id="consentActions" style="display:none; margin-top:1rem;">
+                    <button type="button" class="btn-primary" onclick="confirmAgreement()">✅ أوافق وأكمل</button>
+                    <button type="button" class="btn-secondary" onclick="window.print()">🖨️ حفظ نسخة للطباعة</button>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer class="legal-footer">
@@ -162,15 +181,7 @@
         </p>
     </footer>
 
-    <script>
-        document.querySelectorAll('.toc a').forEach(link => {
-            link.addEventListener('click', e => {
-                e.preventDefault();
-                const target = document.querySelector(link.getAttribute('href'));
-                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-        });
-    </script>
+    <script src="legal-policy.js"></script>
 </body>
 
 </html>
